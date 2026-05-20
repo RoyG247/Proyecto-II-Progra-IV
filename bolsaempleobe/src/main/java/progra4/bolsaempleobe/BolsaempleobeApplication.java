@@ -1,4 +1,4 @@
-package org.example.bolsaempleobe;
+package progra4.bolsaempleobe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
