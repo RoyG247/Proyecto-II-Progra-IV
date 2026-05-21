@@ -158,7 +158,7 @@ Proyecto desarrollado para el curso de **Programación IV**.
 |------------|
 | [RoyG247](https://github.com/RoyG247) |
 | [Carlos175214](https://github.com/Carlos175214) |
-| [IsaacHollow](https://github.com/IsaacHollow). |
+| [IsaacHollow](https://github.com/IsaacHollow) |
 | *(ver [contributors](https://github.com/RoyG247/Proyecto-II-Progra-IV/graphs/contributors))* |
 
 ---
