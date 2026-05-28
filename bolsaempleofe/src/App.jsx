@@ -1,37 +1,50 @@
-import './App.css';
-import BolsaEmpleo from './pages/inicio/inicio.jsx';
+import './pages/inicio/inicio.css';
+import BuscarPuestos from './pages/inicio/public/buscar_Puestos.jsx';
+import RegistroOferente from './pages/inicio/public/registro_Oferente.jsx';
+import RegistroEmpresa from './pages/inicio/public/registro_Empresa.jsx';
+import Login from './pages/inicio/public/login.jsx';
+
 import { Link, BrowserRouter, Routes, Route } from 'react-router';
-import { AppProvider } from '@/AppProvider.jsx';
+import Inicio from './pages/inicio/inicio.jsx';
+import imagenA from "./images/imagenA.png";
 
 function App() {
     return (
-        <AppProvider>
-            <BrowserRouter>
-                <Header />
-                <Main />
-                <Footer />
-            </BrowserRouter>
-        </AppProvider>
+        <BrowserRouter>
+            <Nav />
+            <main style={{ paddingBottom: '60px' }}>
+                <Routes>
+                    <Route path="/" element={<Inicio />} />
+                    <Route path="/inicio" element={<Inicio />} />
+                    <Route path="/registro-empresa" element={<RegistroEmpresa />} />
+                    <Route path="/registro-oferente" element={<RegistroOferente />} />
+                    <Route path="/buscar-puestos" element={<BuscarPuestos />} />
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </main>
+            <Footer />
+        </BrowserRouter>
     );
 }
 
-function Header() {
+function Nav() {
     return (
-        <header className="header">
-            <p>Bolsa de Empleo</p>
-            <Link to="/">Inicio</Link>
-        </header>
-    );
-}
-
-function Main() {
-    return (
-        <div className="main">
-            <Routes>
-                <Route exact path="/" element={<BolsaEmpleo />} />
-                <Route exact path="/inicio" element={<BolsaEmpleo />} />
-            </Routes>
-        </div>
+        <nav className="nav">
+            <div className="nav__inner container">
+                <Link to="/" className="nav__logo">
+                    <img src={imagenA} className="nav__logo_img" alt="logo" />
+                    Bolsa de Empleo
+                </Link>
+                <ul className="nav__links" role="list">
+                    <li><Link to="/buscar-puestos" className="nav__link">Buscar Puestos</Link></li>
+                    <li><Link to="/registro-empresa" className="nav__link">Registro Empresa</Link></li>
+                    <li><Link to="/registro-oferente" className="nav__link">Registro Oferente</Link></li>
+                </ul>
+                <div className="nav__actions">
+                    <Link to="/login" className="btn btn--primary">Iniciar sesión</Link>
+                </div>
+            </div>
+        </nav>
     );
 }
 
@@ -39,12 +52,11 @@ function Footer() {
     return (
         <footer className="footer">
             <div>
-                <strong>Bolsa de Empleo</strong><br />
-                <small>Total Soft Inc.</small>
+                <strong>Bolsa de Empleo</strong>
+                <small> — EIF209 Programación IV</small>
             </div>
             <div>
-                <small>Contacto: info@bolsaempleo.local</small><br />
-                <small>Créditos: Equipo de desarrollo</small>
+                <small>Contacto: info@bolsaempleo.local</small>
             </div>
         </footer>
     );
