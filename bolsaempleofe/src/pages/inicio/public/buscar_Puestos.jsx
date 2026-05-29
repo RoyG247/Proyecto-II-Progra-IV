@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "../inicio.css";
 
 const BACKEND = "http://localhost:8080/api/publico";
 

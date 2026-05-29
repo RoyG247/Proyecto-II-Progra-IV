@@ -51,12 +51,20 @@ function Nav() {
 function Footer() {
     return (
         <footer className="footer">
-            <div>
-                <strong>Bolsa de Empleo</strong>
-                <small> — EIF209 Programación IV</small>
-            </div>
-            <div>
-                <small>Contacto: info@bolsaempleo.local</small>
+            <div className="container">
+                <div className="footer__top">
+                    <div className="footer__logo">
+                        BolsaEmpleo
+                    </div>
+                    <a href="mailto:info@bolsaempleo.cr" className="footer__contact">
+                        <span className="footer__contact-icon">✉</span>
+                        info@bolsaempleo.cr
+                    </a>
+                </div>
+                <div className="footer__bottom">
+                    <p className="footer__copy">&copy; 2026 <strong>BolsaEmpleo.</strong> Progra IV Todos los derechos
+                        reservados.</p>
+                </div>
             </div>
         </footer>
     );
