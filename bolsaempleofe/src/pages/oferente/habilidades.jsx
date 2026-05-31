@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 
-
 function Habilidades() {
     const id = localStorage.getItem("id");
     const [habilidades, setHabilidades] = useState([]);
-    const [categorias, setCategorias] = useState([]);
     const [hijos, setHijos] = useState([]);
     const [ruta, setRuta] = useState([]);
     const [form, setForm] = useState({ idCaracteristica: "", nivel: 1 });
 
     useEffect(() => {
         cargarHabilidades();
-        cargarCategorias();
+        cargarRaices();
     }, []);
 
     function cargarHabilidades() {
@@ -21,10 +19,10 @@ function Habilidades() {
             .catch(err => console.error(err));
     }
 
-    function cargarCategorias() {
+    function cargarRaices() {
         fetch("http://localhost:8080/api/oferente/caracteristicas")
             .then(res => res.json())
-            .then(data => setCategorias(data))
+            .then(data => setHijos(data))
             .catch(err => console.error(err));
     }
 
@@ -34,21 +32,15 @@ function Habilidades() {
             .then(data => {
                 setHijos(data);
                 setRuta(prev => [...prev, cat]);
+                setForm({ idCaracteristica: "", nivel: 1 });
             });
     }
 
-    function volverA(index) {
-        if (index === -1) {
-            setHijos([]);
-            setRuta([]);
-        } else {
-            const nuevaRuta = ruta.slice(0, index + 1);
-            const cat = nuevaRuta[nuevaRuta.length - 1];
-            setRuta(nuevaRuta);
-            fetch(`http://localhost:8080/api/oferente/caracteristicas/${cat.id}/hijos`)
-                .then(res => res.json())
-                .then(data => setHijos(data));
-        }
+    function volverARaices() {
+        setHijos([]);
+        setRuta([]);
+        setForm({ idCaracteristica: "", nivel: 1 });
+        cargarRaices();
     }
 
     async function agregarHabilidad() {
@@ -67,12 +59,9 @@ function Habilidades() {
         }
     }
 
-    const listaMostrada = hijos.length > 0 ? hijos : categorias;
-
     return (
         <div className="hab-container">
             <h1 className="hab-title">Mis Habilidades</h1>
-
             <div className="hab-grid">
 
                 {/* IZQUIERDA - habilidades actuales */}
@@ -96,23 +85,28 @@ function Habilidades() {
                     <p className="hab-label"><strong>Ruta:</strong></p>
                     <div style={{ display: "flex", gap: "8px", marginBottom: "15px", flexWrap: "wrap" }}>
                         <span className="tag" style={{ cursor: "pointer" }}
-                              onClick={() => volverA(-1)}>Raíces</span>
-                        {ruta.map((r, i) => (
-                            <span key={r.id}>
+                              onClick={volverARaices}>Raíces</span>
+                        {ruta.map((r) => (
+                            <span key={r.id} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                                 <span>/</span>
-                                <span className="tag" style={{ cursor: "pointer" }}
-                                      onClick={() => volverA(i)}>{r.nombre}</span>
+                                <span className="tag">{r.nombre}</span>
                             </span>
                         ))}
                     </div>
 
-                    <p className="hab-label">Subcategorías</p>
+                    <p className="hab-label">
+                        {ruta.length === 0 ? "Categorías" : "Subcategorías"}
+                    </p>
                     <div className="hab-list">
-                        {listaMostrada.map(c => (
+                        {hijos.map(c => (
                             <div className="hab-item" key={c.id}>
                                 <span>{c.nombre}</span>
-                                <button className="btn-enter"
-                                        onClick={() => entrarCategoria(c)}>Entrar</button>
+                                {c.tieneHijos ? (
+                                    <button className="btn-enter"
+                                            onClick={() => entrarCategoria(c)}>Entrar</button>
+                                ) : (
+                                    <span style={{ fontSize: "0.8rem", color: "#999" }}>hoja</span>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -126,7 +120,7 @@ function Habilidades() {
                         <select value={form.idCaracteristica}
                                 onChange={e => setForm({ ...form, idCaracteristica: e.target.value })}>
                             <option value="">Seleccione...</option>
-                            {listaMostrada.map(c => (
+                            {hijos.map(c => (
                                 <option key={c.id} value={c.id}>{c.nombre}</option>
                             ))}
                         </select>
@@ -136,7 +130,8 @@ function Habilidades() {
                         <input type="number" min="1" max="5" value={form.nivel}
                                onChange={e => setForm({ ...form, nivel: e.target.value })} />
                     </div>
-                    <button className="hab-btn" onClick={agregarHabilidad}>Agregar</button>
+                    <button className="hab-btn" onClick={agregarHabilidad}
+                            disabled={!form.idCaracteristica}>Agregar</button>
                 </div>
 
             </div>

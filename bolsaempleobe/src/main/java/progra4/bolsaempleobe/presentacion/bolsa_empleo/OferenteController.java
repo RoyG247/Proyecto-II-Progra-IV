@@ -25,16 +25,30 @@ public class OferenteController {
         }
         return ResponseEntity.ok(habilidades);
     }
-
-    // Ver características para el árbol de selección
     @GetMapping("/caracteristicas")
     public ResponseEntity<?> verCaracteristicas() {
-        return ResponseEntity.ok(service.obtenerPadres());
+        List<Caracteristica> padres = service.obtenerPadres();
+        List<Map<String, Object>> resultado = padres.stream().map(p -> {
+            Map<String, Object> item = new java.util.HashMap<>();
+            item.put("id", p.getId());
+            item.put("nombre", p.getNombre());
+            item.put("tieneHijos", !service.obtenerHijos(p.getId()).isEmpty());
+            return item;
+        }).toList();
+        return ResponseEntity.ok(resultado);
     }
 
     @GetMapping("/caracteristicas/{id}/hijos")
     public ResponseEntity<?> verHijos(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.obtenerHijos(id));
+        List<Caracteristica> hijos = service.obtenerHijos(id);
+        List<Map<String, Object>> resultado = hijos.stream().map(h -> {
+            Map<String, Object> item = new java.util.HashMap<>();
+            item.put("id", h.getId());
+            item.put("nombre", h.getNombre());
+            item.put("tieneHijos", !service.obtenerHijos(h.getId()).isEmpty());
+            return item;
+        }).toList();
+        return ResponseEntity.ok(resultado);
     }
 
     // Agregar o actualizar habilidad
