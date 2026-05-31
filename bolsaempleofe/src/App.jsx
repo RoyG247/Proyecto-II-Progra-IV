@@ -3,6 +3,10 @@ import BuscarPuestos from './pages/inicio/public/buscar_Puestos.jsx';
 import RegistroOferente from './pages/inicio/public/registro_Oferente.jsx';
 import RegistroEmpresa from './pages/inicio/public/registro_Empresa.jsx';
 import Login from './pages/inicio/public/login.jsx';
+import Habilidades from './pages/oferente/habilidades.jsx';
+import DashboardOferente from './pages/oferente/dashboardOferente.jsx';
+import CV from './pages/oferente/CV.jsx';
+
 
 import { Link, BrowserRouter, Routes, Route } from 'react-router';
 import Inicio from './pages/inicio/inicio.jsx';
@@ -20,12 +24,17 @@ function App() {
                     <Route path="/registro-oferente" element={<RegistroOferente />} />
                     <Route path="/buscar-puestos" element={<BuscarPuestos />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/oferente/dashboard" element={<DashboardOferente />} />
+                    <Route path="/oferente/habilidades" element={<Habilidades />} />
+                    <Route path="/oferente/cv" element={<CV />} />
+
                 </Routes>
             </main>
             <Footer />
         </BrowserRouter>
     );
 }
+
 function Nav() {
     const rol = localStorage.getItem("rol");
     const id = localStorage.getItem("id");

@@ -93,7 +93,7 @@ public class PublicoController {
         return ResponseEntity.ok(resultado);
     }
 
-    // Busca puestos según características seleccionadas
+
     @GetMapping("/buscar-puestos")
     public ResponseEntity<?> buscarPuestos(
             @RequestParam(required = false) List<Integer> caracteristicas) {
