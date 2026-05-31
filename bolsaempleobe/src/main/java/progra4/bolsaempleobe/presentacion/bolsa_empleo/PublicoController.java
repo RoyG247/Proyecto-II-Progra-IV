@@ -1,4 +1,5 @@
 package progra4.bolsaempleobe.presentacion.bolsa_empleo;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import progra4.bolsaempleobe.logic.Service;
 import progra4.bolsaempleobe.logic.Caracteristica;
 import progra4.bolsaempleobe.logic.Oferta;
+import progra4.bolsaempleobe.logic.Usuario;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,31 @@ public class PublicoController {
                 body.get("contrasena")
         );
         return ResponseEntity.ok("Registro exitoso");
+    }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+        try {
+            String correo = body.get("correo");
+            String contrasena = body.get("contrasena");
+            Usuario usuario = service.getUsuarioByCorreo(correo);
+            if (!passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+                return ResponseEntity.status(401).body("Contraseña incorrecta");
+            }
+            if (!usuario.getAprobado()) {
+                return ResponseEntity.status(403).body("Usuario pendiente de aprobación");
+            }
+            return ResponseEntity.ok(Map.of(
+                    "token", "provisional",
+                    "rol", usuario.getRol(),
+                    "id", usuario.getId()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Usuario no encontrado");
+        }
     }
 
     @PostMapping("/registro-empresa")

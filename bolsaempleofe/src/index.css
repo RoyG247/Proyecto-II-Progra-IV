@@ -417,19 +417,14 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* Icono circular del avatar */
-.user-icon {
-    display: flex;       /* Convierte el div en un contenedor Flex */
-    justify-content: center; /* Centra horizontalmente el contenido (la img) */
-    margin-bottom: 20px;
-}
-
 .user-icon img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    /* margin-bottom ya no es necesario aquí, se movió al contenedor */
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 1rem auto;
 }
-
 /* Grupos de inputs */
 .form-group {
     text-align: left;
