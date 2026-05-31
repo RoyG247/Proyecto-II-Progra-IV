@@ -1,0 +1,82 @@
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router";
+
+function Detalles() {
+    const [oferente, setOferente] = useState(null);
+    const [habilidades, setHabilidades] = useState([]);
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const backend = "http://localhost:8080/api";
+
+    useEffect(() => {
+        const rol = localStorage.getItem("rol");
+        if (rol !== "EMPRESA") window.location.href = "/";
+        if (id) handleList();
+    }, []);
+
+    function handleList() {
+        const request = new Request(
+            `${backend}/empresa/candidatos/${id}/detalles`,
+            { method: "GET", headers: {} }
+        );
+        (async () => {
+            const response = await fetch(request);
+            if (!response.ok) { alert("Error: " + response.status); return; }
+            const data = await response.json();
+            setOferente(data.oferente);
+            setHabilidades(data.habilidades);
+        })();
+    }
+
+    return (
+        <main className="container">
+            <h2 className="title">Detalle de oferente</h2>
+
+            {oferente && (
+                <div className="admin-panel">
+                    <div className="table-container">
+                        <p><strong>ID:</strong> {oferente.usuarios?.id}</p>
+                        <p><strong>Email:</strong> {oferente.usuarios?.correo}</p>
+                        <p><strong>Nombre:</strong> {oferente.nombre}</p>
+                        <p><strong>Teléfono:</strong> {oferente.telefono}</p>
+                        <p><strong>Residencia:</strong> {oferente.residencia}</p>
+                    </div>
+                </div>
+            )}
+
+            <h3 className="title">Habilidades</h3>
+
+            <div className="admin-panel">
+                <table className="table-container">
+                    <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Nivel</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {habilidades.map((h, index) => (
+                        <tr key={index}>
+                            <td>{h.idCaracteristica?.nombre}</td>
+                            <td>{h.nivel}</td>
+                        </tr>
+                    ))}
+                    {habilidades.length === 0 && (
+                        <tr>
+                            <td colSpan="2" style={{ textAlign: "center", padding: "1em" }}>
+                                Sin habilidades registradas.
+                            </td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+            </div>
+
+            <Link to="/empresa/ver-puestos" className="btn btn--primary">
+                Volver
+            </Link>
+        </main>
+    );
+}
+
+export default Detalles;
