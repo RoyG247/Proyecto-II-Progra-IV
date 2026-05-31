@@ -6,6 +6,11 @@ import Login from './pages/inicio/public/login.jsx';
 import Habilidades from './pages/oferente/habilidades.jsx';
 import DashboardOferente from './pages/oferente/dashboardOferente.jsx';
 import CV from './pages/oferente/CV.jsx';
+import Candidatos from './pages/empresa/candidatos.jsx';
+import DashboardEmpresa from './pages/empresa/dashboardEmpresa.jsx';
+import Detalles from './pages/empresa/detalles.jsx';
+import PublicarPuesto from './pages/empresa/publicar_Puesto.jsx';
+import Ver_Mis_Puestos from './pages/empresa/ver_Mis_Puestos.jsx';
 
 
 import { Link, BrowserRouter, Routes, Route } from 'react-router';
@@ -27,7 +32,11 @@ function App() {
                     <Route path="/oferente/dashboard" element={<DashboardOferente />} />
                     <Route path="/oferente/habilidades" element={<Habilidades />} />
                     <Route path="/oferente/cv" element={<CV />} />
-
+                    <Route path="/empresa/candidatos" element={<Candidatos />} />
+                    <Route path="/empresa/dashboard" element={<DashboardEmpresa />} />
+                    <Route path="/empresa/detalles" element={<Detalles />} />
+                    <Route path="/empresa/publicar-puesto" element={<PublicarPuesto />} />
+                    <Route path="/empresa/ver-puestos" element={<Ver_Mis_Puestos />} />
                 </Routes>
             </main>
             <Footer />
