@@ -27,6 +27,15 @@ function Detalles() {
             setHabilidades(data.habilidades);
         })();
     }
+    async function verCV() {
+        const res = await fetch(`${backend}/oferente/${id}/cv`);
+        const data = await res.json();
+        if (data.tieneCV) {
+            window.open(`${backend}/oferente/cv/ver/${data.cv.id}`, "_blank");
+        } else {
+            alert("Este oferente no tiene CV registrado.");
+        }
+    }
 
     return (
         <main className="container">
@@ -72,9 +81,14 @@ function Detalles() {
                 </table>
             </div>
 
-            <Link to="/empresa/ver-puestos" className="btn btn--primary">
-                Volver
-            </Link>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+                <button onClick={verCV} className="btn btn--primary">
+                    Ver CV
+                </button>
+                <Link to="/empresa/ver-puestos" className="btn btn--primary">
+                    Volver
+                </Link>
+            </div>
         </main>
     );
 }
