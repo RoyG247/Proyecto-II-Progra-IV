@@ -40,7 +40,6 @@ public class Service {
 
 
 
-
     /*==========Empresas============*/
     public List<Oferta> obtenerTop5Publicos() {
         List<Oferta> ofertas = ofertaRepository.findTop5Publicos(PageRequest.of(0, 5));
@@ -304,6 +303,22 @@ public class Service {
         Usuario usuario = usuarioRepository.findByCorreo(correoOferente).orElse(null);
         if (usuario == null) return false;
         return postulacionesRepository.existsByOferta_IdAndOferente_Id(idOferta, usuario.getId());
+    }
+
+    public boolean yaPostuladoPorId(Integer idOferta, String idOferente) {
+        return postulacionesRepository.existsByOferta_IdAndOferente_Id(idOferta, idOferente);
+    }
+
+    public void postularPorId(Integer idOferta, String idOferente) {
+        if (yaPostuladoPorId(idOferta, idOferente)) return;
+
+        Oferente oferente = oferenteRepository.findById(idOferente)
+                .orElseThrow(() -> new RuntimeException("Oferente no encontrado"));
+
+        Postulaciones p = new Postulaciones();
+        p.setOferta(ofertaRepository.findById(idOferta).orElseThrow());
+        p.setOferente(oferente);
+        postulacionesRepository.save(p);
     }
 
     public void postular(Integer idOferta, String correoOferente) {

@@ -101,5 +101,11 @@ public class PublicoController {
         return ResponseEntity.ok(ofertas);
     }
 
-
+    @PostMapping("/postular")
+    public ResponseEntity<?> postular(@RequestBody Map<String, Object> body) {
+        Integer idOferta = (Integer) body.get("idOferta");
+        String idOferente = (String) body.get("idOferente");
+        service.postularPorId(idOferta, idOferente);
+        return ResponseEntity.ok("Postulación exitosa");
+    }
 }
