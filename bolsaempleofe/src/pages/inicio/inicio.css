@@ -423,11 +423,11 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 20px;
 }
 
-.user-icon img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    /* margin-bottom ya no es necesario aquí, se movió al contenedor */
+.login-user-img {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    display: block;
 }
 
 /* Grupos de inputs */

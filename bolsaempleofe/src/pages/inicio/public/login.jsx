@@ -43,9 +43,12 @@ function Login() {
                     <h1>Iniciar Sesión</h1>
                 </div>
                 <div className="login-body">
-                    <img src="/src/images/usuario.png" alt="User Icon"/>
+                    <img
+                        src="/src/images/usuario.png"
+                        alt="User Icon"
+                        className="login-user-img"
+                    />
                     {error && <div className="alert alert--error">{error}</div>}
-
                     <div className="form-group">
                         <label>Correo</label>
                         <input type="email" name="correo"
