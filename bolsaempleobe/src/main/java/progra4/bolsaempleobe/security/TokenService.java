@@ -28,6 +28,7 @@ public class TokenService {
         var scopes =  List.of(usuario.getRol());
         builder.claim("scope", scopes);
         builder.claim("id", usuario.getId());
+        builder.claim("correo", usuario.getCorreo());
         var claims = builder.build();
         var key = jwtConfig.getSecretKey();
         var jwt = new SignedJWT(header, claims);

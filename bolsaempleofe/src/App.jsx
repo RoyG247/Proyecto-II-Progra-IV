@@ -45,13 +45,14 @@ function App() {
 }
 
 function Nav() {
+    const token = localStorage.getItem("token");
     const rol = localStorage.getItem("rol");
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem("correo");
 
     function cerrarSesion() {
         localStorage.removeItem("token");
         localStorage.removeItem("rol");
-        localStorage.removeItem("id");
+        localStorage.removeItem("correo");
         window.location.href = "/";
     }
 
@@ -97,11 +98,13 @@ function Nav() {
                 </ul>
 
                 <div className="nav__actions">
-                    {!rol && <Link to="/login" className="btn btn--primary">Iniciar sesión</Link>}
-                    {rol && <>
-                        <span style={{color:"white", marginRight:"10px"}}>{id}</span>
-                        <button className="btn btn--primary" onClick={cerrarSesion}>Cerrar sesión</button>
-                    </>}
+                    {!token && <Link to="/login" className="btn btn--primary">Iniciar sesión</Link>}
+                    {token && (
+                        <>
+                            <span style={{color:"white", marginRight:"10px"}}>{id}</span>
+                            <button className="btn btn--primary" onClick={cerrarSesion}>Cerrar sesión</button>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>

@@ -27,22 +27,24 @@ public class Controller_Login {
     @PostMapping("/register")
     public Usuario register(@RequestBody Usuario usuario) throws IOException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        //usuario.setPassword(encoder.encode(usuario.getPassword()));
+        usuario.setContrasena(encoder.encode(usuario.getContrasena()));
         return usuarioRepository.save(usuario);
     }
 
     @PostMapping("/login")
     public String login(@RequestBody Usuario usuario) {
-        try{
-            Usuario ubd= usuarioRepository.findById(usuario.getId()).get();
+        try {
+            Usuario ubd = usuario.getCorreo() != null && !usuario.getCorreo().isBlank()
+                    ? usuarioRepository.findByCorreo(usuario.getCorreo()).orElseThrow()
+                    : usuarioRepository.findById(usuario.getId()).orElseThrow();
+
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//            if(!encoder.matches(usuario.getPassword(), ubd.getPassword())) {
-//                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-//            }
-            //return tokenService.generateToken(ubd);
+            if (!encoder.matches(usuario.getContrasena(), ubd.getContrasena())) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            return tokenService.generateToken(ubd);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-        return new String();
     }
 }

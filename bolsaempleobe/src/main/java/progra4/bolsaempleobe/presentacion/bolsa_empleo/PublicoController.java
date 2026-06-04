@@ -55,7 +55,8 @@ public class PublicoController {
             return ResponseEntity.ok(Map.of(
                     "token", "provisional",
                     "rol", usuario.getRol(),
-                    "id", usuario.getId()
+                    "id", usuario.getId(),
+                    "user", usuario.getCorreo()
             ));
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Usuario no encontrado");

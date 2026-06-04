@@ -1,3 +1,4 @@
+drop database if exists bolsa_empleo;
 CREATE DATABASE IF NOT EXISTS bolsa_empleo;
 USE bolsa_empleo;
 
@@ -141,7 +142,7 @@ ALTER TABLE oferente_habilidad
 
 
 INSERT INTO usuarios (id, correo, contrasena, rol, aprobado)
-VALUES ('1', 'admin@bolsa.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.7uqqCyO', 'ADM', TRUE);
+VALUES ('1', 'admin@bolsa.com', '$2a$10$ymijR1X6Dh2i51FCR9LZ0eLZissViKVxqNNzoCT5VToqynXsQl6K.', 'ADM', TRUE);
 
 INSERT INTO administradores (id, nombre)
 VALUES ('1', 'Administrador Sistema');
