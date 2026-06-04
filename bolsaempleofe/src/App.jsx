@@ -11,6 +11,10 @@ import DashboardEmpresa from './pages/empresa/dashboardEmpresa.jsx';
 import Detalles from './pages/empresa/detalles.jsx';
 import PublicarPuesto from './pages/empresa/publicar_Puesto.jsx';
 import Ver_Mis_Puestos from './pages/empresa/ver_Mis_Puestos.jsx';
+import CaracteristicasAdmin from './pages/admin/caracteristicas.jsx';
+import EmpresasPendientes from './pages/admin/empresasPendientes.jsx';
+import OferentesPendientes from './pages/admin/oferentesPendientes.jsx';
+import DashboardAdmin from './pages/admin/dashboard_Admin.jsx';
 
 
 import { Link, BrowserRouter, Routes, Route } from 'react-router';
@@ -37,6 +41,10 @@ function App() {
                     <Route path="/empresa/detalles" element={<Detalles />} />
                     <Route path="/empresa/publicar-puesto" element={<PublicarPuesto />} />
                     <Route path="/empresa/ver-puestos" element={<Ver_Mis_Puestos />} />
+                    <Route path="/admin/dashboard" element={<DashboardAdmin />} />
+                    <Route path="/admin/caracteristicas" element={<CaracteristicasAdmin />} />
+                    <Route path="/admin/empresas-pendientes" element={<EmpresasPendientes />} />
+                    <Route path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
                 </Routes>
             </main>
             <Footer />
