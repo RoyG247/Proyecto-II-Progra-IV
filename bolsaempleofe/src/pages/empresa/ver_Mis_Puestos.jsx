@@ -8,12 +8,10 @@ function Ver_Mis_Puestos() {
     const backend = "http://localhost:8080/api";
     const token = localStorage.getItem("token");
 
-
-
     function handleList() {
         const request = new Request(
             `${backend}/empresa/${idEmpresa}/puestos`,
-            { method: "GET",  headers: {
+            { method: "GET", headers: {
                     "Authorization": `Bearer ${token}`
                 }}
         );
@@ -34,12 +32,24 @@ function Ver_Mis_Puestos() {
     function handleDesactivar(id) {
         const request = new Request(
             `${backend}/empresa/puestos/desactivar/${id}`,
-            { method: "DELETE", headers: { "Authorization": `Bearer ${token}`} }
+            { method: "DELETE", headers: { "Authorization": `Bearer ${token}` } }
         );
         (async () => {
             const response = await fetch(request);
             if (!response.ok) { alert("Error: " + response.status); return; }
-            handleList(); // refresca la tabla
+            handleList();
+        })();
+    }
+
+    function handleActivar(id) {
+        const request = new Request(
+            `${backend}/empresa/puestos/activar/${id}`,
+            { method: "PUT", headers: { "Authorization": `Bearer ${token}` } }
+        );
+        (async () => {
+            const response = await fetch(request);
+            if (!response.ok) { alert("Error: " + response.status); return; }
+            handleList();
         })();
     }
 
@@ -80,13 +90,23 @@ function Ver_Mis_Puestos() {
                                 }
                             </td>
                             <td>
-                                <button
-                                    className="admin-btn"
-                                    style={{ background: "#dc3545" }}
-                                    onClick={() => handleDesactivar(p.id)}
-                                >
-                                    Desactivar
-                                </button>
+                                {p.activo ? (
+                                    <button
+                                        className="admin-btn"
+                                        style={{ background: "#dc3545" }}
+                                        onClick={() => handleDesactivar(p.id)}
+                                    >
+                                        Desactivar
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="admin-btn"
+                                        style={{ background: "#28a745" }}
+                                        onClick={() => handleActivar(p.id)}
+                                    >
+                                        Activar
+                                    </button>
+                                )}
                                 <Link to={`/empresa/candidatos?idOferta=${p.id}`}>
                                     <button className="admin-btn">
                                         Buscar candidatos

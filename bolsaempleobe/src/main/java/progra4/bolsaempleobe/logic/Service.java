@@ -336,4 +336,13 @@ public class Service {
         postulacionesRepository.save(p);
     }
 
+    public void activarPuesto(Integer id) {
+        Oferta oferta = ofertaRepository.findById(id).orElse(null);
+        if (oferta != null) {
+            oferta.setActivo(true);
+            ofertaRepository.save(oferta);
+        }
+    }
+
+    
 }

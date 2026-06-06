@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-z
+
 function BuscarPuestos() {
     const [caracteristicas, setCaracteristicas] = useState([]);
     const [seleccionadas, setSeleccionadas] = useState([]);

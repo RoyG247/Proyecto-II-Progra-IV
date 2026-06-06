@@ -94,4 +94,11 @@ public class EmpresaController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/puestos/activar/{id}")
+    public ResponseEntity<?> activarPuesto(@PathVariable Integer id) {
+        service.activarPuesto(id);
+        return ResponseEntity.ok("Puesto activado");
+    }
+    
 }
