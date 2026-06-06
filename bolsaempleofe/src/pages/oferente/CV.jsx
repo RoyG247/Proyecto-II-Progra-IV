@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 function CV() {
     const id = localStorage.getItem("id");
     const [datos, setDatos] = useState(null);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const rol = localStorage.getItem("rol");
@@ -10,11 +11,35 @@ function CV() {
         cargarDatos();
     }, []);
 
-    function cargarDatos() {
-        fetch(`http://localhost:8080/api/oferente/${id}/cv`)
-            .then(res => res.json())
-            .then(data => setDatos(data))
-            .catch(err => console.error(err));
+    function getAuthHeaders() {
+        const token = localStorage.getItem("token");
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    }
+
+    async function cargarDatos() {
+        if (!id) {
+            setError("No se encontró el ID del oferente. Iniciá sesión de nuevo.");
+            return;
+        }
+        setError("");
+        try {
+            const res = await fetch(`http://localhost:8080/api/oferente/${id}/cv`, {
+                headers: getAuthHeaders()
+            });
+            if (!res.ok) {
+                const detalle = await res.text();
+                const msg = res.status === 401
+                    ? "Sesión expirada o sin permisos. Iniciá sesión de nuevo."
+                    : (detalle || "Error al cargar el CV.");
+                setError(msg);
+                return;
+            }
+            const data = await res.json();
+            setDatos(data);
+        } catch (err) {
+            console.error(err);
+            setError("Error al cargar el CV.");
+        }
     }
 
     async function subirCV(e) {
@@ -24,18 +49,24 @@ function CV() {
         formData.append("archivo", archivo);
         const res = await fetch(`http://localhost:8080/api/oferente/${id}/cv/subir`, {
             method: "POST",
+            headers: getAuthHeaders(),
             body: formData
         });
-        if (res.ok) cargarDatos();
-        else alert("Error al subir CV");
+        if (res.ok) {
+            cargarDatos();
+        } else {
+            const detalle = await res.text();
+            alert(detalle || "Error al subir CV");
+        }
     }
 
     async function eliminarCV(cvId) {
         const res = await fetch(`http://localhost:8080/api/oferente/cv/eliminar/${cvId}`,
-            { method: "DELETE" });
+            { method: "DELETE", headers: getAuthHeaders() });
         if (res.ok) cargarDatos();
     }
 
+    if (error) return <p>{error}</p>;
     if (!datos) return <p>Cargando...</p>;
 
     const { oferente, tieneCV, cv } = datos;

@@ -23,23 +23,20 @@ public class OferenteCVService {
 
     public OferenteCV guardarArchivo(Oferente oferente, MultipartFile file) throws IOException {
 
-        // 🔴 1. Verificar si ya existe un CV
         Optional<OferenteCV> existente = repository.findByOferente_Id(oferente.getId());
-
-        if (existente.isPresent()) {
-            // 🧨 2. Eliminar el anterior
-            repository.deleteById(existente.get().getId());
+        OferenteCV cv = existente.orElseGet(OferenteCV::new);
+        if (cv.getOferente() == null) {
+            cv.setOferente(oferente);
         }
-
-        // 🟢 3. Crear el nuevo CV
-        OferenteCV cv = new OferenteCV();
-        cv.setOferente(oferente);
-        cv.setNombreArchivo(file.getOriginalFilename());
+        String nombreArchivo = file.getOriginalFilename();
+        if (nombreArchivo == null || nombreArchivo.isBlank()) {
+            nombreArchivo = "cv.pdf";
+        }
+        cv.setNombreArchivo(nombreArchivo);
         cv.setTamanio(file.getSize());
         cv.setFechaSubida(LocalDateTime.now());
         cv.setArchivo(file.getBytes());
 
-        // 💾 4. Guardar
         return repository.save(cv);
     }
 

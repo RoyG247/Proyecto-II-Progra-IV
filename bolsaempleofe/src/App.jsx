@@ -61,6 +61,7 @@ function Nav() {
         localStorage.removeItem("token");
         localStorage.removeItem("rol");
         localStorage.removeItem("correo");
+        localStorage.removeItem("id");
         window.location.href = "/";
     }
 

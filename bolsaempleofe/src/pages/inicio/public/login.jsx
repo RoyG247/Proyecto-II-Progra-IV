@@ -32,6 +32,7 @@ function Login() {
             localStorage.setItem("token", token);
             localStorage.setItem("rol", user.rol);
             localStorage.setItem("correo", user.correo);
+            localStorage.setItem("id", user.id);
 
             setUser(user);
             let target = "/";
@@ -53,7 +54,7 @@ function Login() {
             return getUser(token);
         }
         else{
-            return {correo:null, rol:'', name:''};
+            return {correo:null, rol:'', name:'', id:null};
         }
     }
 
@@ -65,7 +66,7 @@ function Login() {
             }
             const payloadEncoded = parts[1];
             const payLoad= JSON.parse(atob(payloadEncoded));
-            return { correo: payLoad.correo, rol: payLoad.scope[0], name: payLoad.name }        } catch (error) {
+            return { correo: payLoad.correo, rol: payLoad.scope[0], name: payLoad.name, id: payLoad.id }        } catch (error) {
             console.error('Error decoding JWT:', error);
             return null;
         }

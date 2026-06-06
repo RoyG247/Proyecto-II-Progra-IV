@@ -48,6 +48,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/usuarios/register", "/api/usuarios/login").permitAll()
                         .requestMatchers("/api/publico/**", "/api/puestos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/oferente/caracteristicas",
+                                "/api/oferente/caracteristicas/**",
+                                "/api/empresa/caracteristicas",
+                                "/api/empresa/caracteristicas/**"
+                        ).hasAnyAuthority("SCOPE_OFERENTE", "SCOPE_EMPRESA", "SCOPE_ADM")
                         .requestMatchers("/api/empresa/**").hasAnyAuthority("SCOPE_EMPRESA", "SCOPE_ADM")
                         .requestMatchers("/api/oferente/**").hasAnyAuthority("SCOPE_OFERENTE", "SCOPE_ADM")
                         .requestMatchers("/api/admin/**").hasAuthority("SCOPE_ADM")

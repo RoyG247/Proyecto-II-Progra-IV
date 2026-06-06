@@ -82,6 +82,9 @@ public class OferenteController {
     @GetMapping("/{id}/cv")
     public ResponseEntity<?> verCV(@PathVariable String id) {
         Oferente oferente = service.findById(id);
+        if (oferente == null) {
+            return ResponseEntity.status(404).body("Oferente no encontrado");
+        }
         var cvOpt = cvService.obtenerPorOferenteId(id);
         java.util.Map<String, Object> result = new java.util.HashMap<>();
         result.put("oferente", oferente);
@@ -93,12 +96,18 @@ public class OferenteController {
     @PostMapping("/{id}/cv/subir")
     public ResponseEntity<?> subirCV(@PathVariable String id,
                                      @RequestParam("archivo") org.springframework.web.multipart.MultipartFile archivo) {
+        if (archivo == null || archivo.isEmpty()) {
+            return ResponseEntity.badRequest().body("El archivo es requerido");
+        }
+        Oferente oferente = service.findById(id);
+        if (oferente == null) {
+            return ResponseEntity.status(404).body("Oferente no encontrado");
+        }
         try {
-            Oferente oferente = service.findById(id);
             cvService.guardarArchivo(oferente, archivo);
             return ResponseEntity.ok("CV subido");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al subir CV");
+        } catch (java.io.IOException e) {
+            return ResponseEntity.status(500).body("Error al subir CV: " + e.getMessage());
         }
     }
 
