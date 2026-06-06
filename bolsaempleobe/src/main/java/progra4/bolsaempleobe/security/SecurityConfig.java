@@ -51,8 +51,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/api/oferente/caracteristicas",
                                 "/api/oferente/caracteristicas/**",
+                                "/api/oferente/cv/ver/**",
+                                "/api/oferente/cv/descargar/**",
                                 "/api/empresa/caracteristicas",
                                 "/api/empresa/caracteristicas/**"
+                        ).hasAnyAuthority("SCOPE_OFERENTE", "SCOPE_EMPRESA", "SCOPE_ADM")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/oferente/*/cv"
                         ).hasAnyAuthority("SCOPE_OFERENTE", "SCOPE_EMPRESA", "SCOPE_ADM")
                         .requestMatchers("/api/empresa/**").hasAnyAuthority("SCOPE_EMPRESA", "SCOPE_ADM")
                         .requestMatchers("/api/oferente/**").hasAnyAuthority("SCOPE_OFERENTE", "SCOPE_ADM")

@@ -6,28 +6,36 @@ function Habilidades() {
     const [hijos, setHijos] = useState([]);
     const [ruta, setRuta] = useState([]);
     const [form, setForm] = useState({ idCaracteristica: "", nivel: 1 });
+    const token = localStorage.getItem("token");
+
+    function cargarHabilidades() {
+        fetch(`http://localhost:8080/api/oferente/${id}/habilidades`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        })
+            .then(res => res.json())
+            .then(data => setHabilidades(data))
+            .catch(err => console.error(err));
+    }
+    function cargarRaices() {
+        fetch("http://localhost:8080/api/oferente/caracteristicas", {
+            headers: { "Authorization": `Bearer ${token}` }
+        })
+            .then(res => res.json())
+            .then(data => setHijos(data))
+            .catch(err => console.error(err));
+    }
+
 
     useEffect(() => {
         cargarHabilidades();
         cargarRaices();
     }, []);
 
-    function cargarHabilidades() {
-        fetch(`http://localhost:8080/api/oferente/${id}/habilidades`)
-            .then(res => res.json())
-            .then(data => setHabilidades(data))
-            .catch(err => console.error(err));
-    }
-
-    function cargarRaices() {
-        fetch("http://localhost:8080/api/oferente/caracteristicas")
-            .then(res => res.json())
-            .then(data => setHijos(data))
-            .catch(err => console.error(err));
-    }
 
     function entrarCategoria(cat) {
-        fetch(`http://localhost:8080/api/oferente/caracteristicas/${cat.id}/hijos`)
+        fetch(`http://localhost:8080/api/oferente/caracteristicas/${cat.id}/hijos`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        })
             .then(res => res.json())
             .then(data => {
                 setHijos(data);
@@ -47,7 +55,7 @@ function Habilidades() {
         if (!form.idCaracteristica) { alert("Seleccioná una característica"); return; }
         const res = await fetch(`http://localhost:8080/api/oferente/${id}/habilidades`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify({
                 idCaracteristica: parseInt(form.idCaracteristica),
                 nivel: parseInt(form.nivel)

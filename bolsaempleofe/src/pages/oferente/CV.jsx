@@ -23,7 +23,7 @@ function CV() {
         }
         setError("");
         try {
-            const res = await fetch(`http://localhost:8080/api/oferente/${id}/cv`, {
+            const res = await fetch(`http://localhost:8080/api/oferente/${id}/cv`,  {
                 headers: getAuthHeaders()
             });
             if (!res.ok) {
@@ -60,6 +60,30 @@ function CV() {
         }
     }
 
+    async function abrirPDF(cvId) {
+        const res = await fetch(`http://localhost:8080/api/oferente/cv/ver/${cvId}`, {
+            headers: getAuthHeaders()
+        });
+        if (!res.ok) { alert("No se pudo abrir el PDF."); return; }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+    }
+
+    async function descargarPDF(cvId, nombreArchivo) {
+        const res = await fetch(`http://localhost:8080/api/oferente/cv/descargar/${cvId}`, {
+            headers: getAuthHeaders()
+        });
+        if (!res.ok) { alert("No se pudo descargar el PDF."); return; }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = nombreArchivo || "curriculum.pdf";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
     async function eliminarCV(cvId) {
         const res = await fetch(`http://localhost:8080/api/oferente/cv/eliminar/${cvId}`,
             { method: "DELETE", headers: getAuthHeaders() });
@@ -86,10 +110,10 @@ function CV() {
                             </div>
                         </div>
                         <div className="cv-actions">
-                            <a href={`http://localhost:8080/api/oferente/cv/ver/${cv.id}`}
-                               target="_blank" className="cv-btn cv-btn-primary">Abrir PDF</a>
-                            <a href={`http://localhost:8080/api/oferente/cv/descargar/${cv.id}`}
-                               className="cv-btn cv-btn-secondary">Descargar</a>
+                            <button className="cv-btn cv-btn-primary"
+                                    onClick={() => abrirPDF(cv.id)}>Abrir PDF</button>
+                            <button className="cv-btn cv-btn-secondary"
+                                    onClick={() => descargarPDF(cv.id, cv.nombreArchivo)}>Descargar</button>
                             <button className="cv-btn cv-btn-danger"
                                     onClick={() => eliminarCV(cv.id)}>Eliminar</button>
                         </div>

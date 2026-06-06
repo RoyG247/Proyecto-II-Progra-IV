@@ -115,7 +115,7 @@ a { text-decoration: none; color: inherit; }
     align-items: center;
     justify-content: space-between;
     gap: var(--sp-6);
-    padding-block: var(--sp-4);
+    padding-block: var(--sp-2);   /* 0.5rem — más angosto */
 }
 
 .nav__logo {
@@ -141,6 +141,7 @@ a { text-decoration: none; color: inherit; }
     align-items: center;
     gap: var(--sp-1);
     flex: 1;
+    flex-wrap: wrap;
 }
 
 .nav__link {
@@ -230,7 +231,8 @@ a { text-decoration: none; color: inherit; }
     background: var(--color-bg-card);
     border-radius: var(--r-md);
     padding:15px;
-    width:220px;
+    min-width: 180px;
+    flex: 1 1 220px;
     box-shadow: var(--shadow-cd);
     transition: var(--t-med);
     z-index: 0;
@@ -300,25 +302,22 @@ a { text-decoration: none; color: inherit; }
     width: 100%;
     background: #000c52;
     color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 20px;
+    padding: 5px 20px;
     font-size: 12px;
+    z-index: 50;
 }
 
 .footer__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--sp-6);
-    padding-bottom: var(--sp-0);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    gap: var(--sp-4);
     flex-wrap: wrap;
 }
 
-.footer__logo{
+.footer__logo {
     font-family: var(--font-display);
-    font-size: var(--text-xl);
+    font-size: var(--text-sm);
     font-weight: 700;
     color: #fff;
     letter-spacing: -0.02em;
@@ -327,8 +326,8 @@ a { text-decoration: none; color: inherit; }
 .footer__contact {
     display: flex;
     align-items: center;
-    gap: var(--sp-2);
-    font-size: var(--text-sm);
+    gap: var(--sp-1);
+    font-size: var(--text-xs);
     color: rgba(255,255,255,0.55);
     transition: color var(--t-fast);
 }
@@ -341,29 +340,25 @@ a { text-decoration: none; color: inherit; }
 }
 
 .footer__contact-icon {
-    width: 24px; height: 24px;
+    width: 18px; height: 18px;
     border-radius: var(--r-sm);
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(255,255,255,0.1);
     display: grid;
     place-items: center;
-    font-size: 14px;
+    font-size: 11px;
     flex-shrink: 0;
     transition: background var(--t-fast), border-color var(--t-fast);
 }
 
 .footer__bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sp-4);
-    padding-top: var(--sp-0);
-    flex-wrap: wrap;
+    display: none;
 }
 
 .footer__copy {
     font-size: var(--text-xs);
     color: rgba(255,255,255,0.3);
+    margin: 0;
 }
 
 .footer__copy strong {
@@ -500,16 +495,11 @@ body, html {
 /* --- CONTENEDOR PRINCIPAL (ARREGLO PARA QUE NO SE CORTE) --- */
 .main-content {
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;     /* Centra verticalmente */
-
-    /* CAMBIO CLAVE: Usamos min-height en lugar de height fixed.
-       Esto asegura que ocupe TODA la pantalla, pero que pueda CRECER si el contenido es largo. */
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-
-    /* Añadimos padding arriba y abajo para dar aire y que no pegue con las barras (azul, etc.) */
-    padding: 40px 20px 150px 20px;
-    box-sizing: border-box; /* Asegura que el padding se incluya en el cálculo de altura */
+    padding: 40px 20px clamp(60px, 10vw, 150px) 20px;
+    box-sizing: border-box;
 }
 
 /* --- LA TARJETA PRINCIPAL (EL UNIFICADOR) --- */
@@ -959,6 +949,12 @@ body, html {
 
 /* Responsivo para pantallas pequeñas */
 @media (max-width: 900px) {
+    .grid-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
     .grid-layout {
         grid-template-columns: 1fr;
     }
@@ -1514,6 +1510,12 @@ body, html {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .cv-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .cv-container {
         grid-template-columns: 1fr;
     }
 
@@ -1618,7 +1620,20 @@ body, html {
 /* RESPONSIVE */
 @media (max-width: 900px) {
     .hab-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .hab-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        font-size: 10px;
+        padding: 4px 10px;
     }
 }
 

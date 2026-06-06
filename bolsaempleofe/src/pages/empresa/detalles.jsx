@@ -32,13 +32,19 @@ function Detalles() {
     }, []);
 
     async function verCV() {
-        const res = await fetch(`${backend}/oferente/${id}/cv`);
+        const res = await fetch(`${backend}/oferente/${id}/cv`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!res.ok) { alert("Error al obtener CV."); return; }
         const data = await res.json();
-        if (data.tieneCV) {
-            window.open(`${backend}/oferente/cv/ver/${data.cv.id}`, "_blank");
-        } else {
-            alert("Este oferente no tiene CV registrado.");
-        }
+        if (!data.tieneCV) { alert("Este oferente no tiene CV registrado."); return; }
+        const resCV = await fetch(`${backend}/oferente/cv/ver/${data.cv.id}`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!resCV.ok) { alert("No se pudo abrir el CV."); return; }
+        const blob = await resCV.blob();
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
     }
 
     return (
@@ -85,7 +91,7 @@ function Detalles() {
                 </table>
             </div>
 
-            <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1rem", marginBottom: "1rem" }}>
                 <button onClick={verCV} className="btn btn--primary">
                     Ver CV
                 </button>
