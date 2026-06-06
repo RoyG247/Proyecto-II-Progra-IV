@@ -6,17 +6,16 @@ function Ver_Mis_Puestos() {
     const idEmpresa = localStorage.getItem("id");
     const navigate = useNavigate();
     const backend = "http://localhost:8080/api";
+    const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const rol = localStorage.getItem("rol");
-        if (rol !== "EMPRESA") window.location.href = "/";
-        handleList();
-    }, []);
+
 
     function handleList() {
         const request = new Request(
             `${backend}/empresa/${idEmpresa}/puestos`,
-            { method: "GET", headers: {} }
+            { method: "GET",  headers: {
+                    "Authorization": `Bearer ${token}`
+                }}
         );
         (async () => {
             const response = await fetch(request);
@@ -26,10 +25,16 @@ function Ver_Mis_Puestos() {
         })();
     }
 
+    useEffect(() => {
+        const rol = localStorage.getItem("rol");
+        if (rol !== "EMPRESA") window.location.href = "/";
+        handleList();
+    }, []);
+
     function handleDesactivar(id) {
         const request = new Request(
             `${backend}/empresa/puestos/desactivar/${id}`,
-            { method: "DELETE", headers: {} }
+            { method: "DELETE", headers: { "Authorization": `Bearer ${token}`} }
         );
         (async () => {
             const response = await fetch(request);

@@ -7,17 +7,14 @@ function Candidatos() {
     const [searchParams] = useSearchParams();
     const idOferta = searchParams.get("idOferta");
     const backend = "http://localhost:8080/api";
+    const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const rol = localStorage.getItem("rol");
-        if (rol !== "EMPRESA") window.location.href = "/";
-        if (idOferta) handleList();
-    }, []);
+
 
     function handleList() {
         const request = new Request(
             `${backend}/empresa/puestos/${idOferta}/candidatos`,
-            { method: "GET", headers: {} }
+            { method: "GET", headers: { "Authorization": `Bearer ${token}`} }
         );
         (async () => {
             const response = await fetch(request);
@@ -27,6 +24,12 @@ function Candidatos() {
             setCandidatos(data.candidatos);
         })();
     }
+
+    useEffect(() => {
+        const rol = localStorage.getItem("rol");
+        if (rol !== "EMPRESA") window.location.href = "/";
+        if (idOferta) handleList();
+    }, []);
 
     return (
         <main className="container">

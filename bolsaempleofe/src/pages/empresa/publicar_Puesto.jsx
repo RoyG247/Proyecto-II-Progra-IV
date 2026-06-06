@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 function PublicarPuesto() {
+    const token = localStorage.getItem("token");
     const [caracteristicas, setCaracteristicas] = useState([]);
     const [niveles, setNiveles] = useState({});
     const [form, setForm] = useState({
@@ -13,15 +14,11 @@ function PublicarPuesto() {
     const idEmpresa = localStorage.getItem("id");
     const backend = "http://localhost:8080/api";
 
-    useEffect(() => {
-        const rol = localStorage.getItem("rol");
-        if (rol !== "EMPRESA") window.location.href = "/";
-        handleCaracteristicas();
-    }, []);
-
     function handleCaracteristicas() {
         const request = new Request(`${backend}/empresa/caracteristicas`,
-            { method: "GET", headers: {} });
+            { method: "GET",  headers: {
+                    "Authorization": `Bearer ${token}`
+                } });
         (async () => {
             const response = await fetch(request);
             if (!response.ok) { alert("Error: " + response.status); return; }
@@ -33,6 +30,13 @@ function PublicarPuesto() {
             setNiveles(nivelesIniciales);
         })();
     }
+
+    useEffect(() => {
+        const rol = localStorage.getItem("rol");
+        if (rol !== "EMPRESA") window.location.href = "/";
+        handleCaracteristicas();
+    }, []);
+
 
     function handleFieldChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -55,7 +59,7 @@ function PublicarPuesto() {
         };
         const request = new Request(`${backend}/empresa/${idEmpresa}/puestos/guardar`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" , "Authorization": `Bearer ${token}`},
             body: JSON.stringify(body)
         });
         (async () => {

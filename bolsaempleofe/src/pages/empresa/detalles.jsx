@@ -7,17 +7,14 @@ function Detalles() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const backend = "http://localhost:8080/api";
+    const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const rol = localStorage.getItem("rol");
-        if (rol !== "EMPRESA") window.location.href = "/";
-        if (id) handleList();
-    }, []);
+
 
     function handleList() {
         const request = new Request(
             `${backend}/empresa/candidatos/${id}/detalles`,
-            { method: "GET", headers: {} }
+            { method: "GET", headers: { "Authorization": `Bearer ${token}`} }
         );
         (async () => {
             const response = await fetch(request);
@@ -27,6 +24,13 @@ function Detalles() {
             setHabilidades(data.habilidades);
         })();
     }
+
+    useEffect(() => {
+        const rol = localStorage.getItem("rol");
+        if (rol !== "EMPRESA") window.location.href = "/";
+        if (id) handleList();
+    }, []);
+
     async function verCV() {
         const res = await fetch(`${backend}/oferente/${id}/cv`);
         const data = await res.json();
